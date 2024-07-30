@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "projects": [
+    {
+      "name": "frontend-challenge",
+      "path": "frontend-challenge",
+      "builds": [
+        {
+          "src": "frontend-challenge/package.json",
+          "use": "@vercel/next"
+        }
+      ],
+      "routes": [
+        {
+          "src": "/(.*)",
+          "dest": "frontend-challenge/$1"
+        }
+      ]
+    }
+  ]
+}
