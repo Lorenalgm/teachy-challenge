@@ -9,7 +9,7 @@ export default function Table({ headers, items, renderRow }) {
         ))}
       </div>
       {items.map((item, index) => (
-        <div key={index} className="grid grid-cols-4 border-b py-2 px-4">
+        <div key={index} className="grid grid-cols-4 border-b py-2 px-4 character">
           {renderRow(item)}
         </div>
       ))}

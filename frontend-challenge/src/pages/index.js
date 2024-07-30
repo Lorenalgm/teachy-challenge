@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Layout from '../components/Layout';
 import Table from '../components/Table';
-import { fetchCharacters } from '../services/swapiService';
 import { infiniteScroll } from '../utils/infiniteScroll';
+import { loadCharacters } from '../services/characterService';
 
 export default function Home() {
   const [characters, setCharacters] = useState([]);
@@ -11,42 +11,17 @@ export default function Home() {
   const [error, setError] = useState(null);
   const [preloading, setPreloading] = useState(false);
 
-  const loadCharacters = async (page) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const newCharacters = await fetchCharacters(page);
-      setCharacters((prev) => [...prev, ...newCharacters]);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    loadCharacters(page);
-  }, [page]);
-
-  useEffect(() => {
-    const prefetchNextPage = async () => {
-      if (preloading) return;
-      setPreloading(true);
-      try {
-        const nextPage = page + 1;
-        const newCharacters = await fetchCharacters(nextPage);
-        setCharacters((prev) => [...prev, ...newCharacters]);
-        setPage(nextPage);
-      } catch (err) {
-        // console.error(err.message);
-      } finally {
-        setPreloading(false);
-      }
-    };
-
-    const removeScrollListener = infiniteScroll(prefetchNextPage, 300);
-    return () => removeScrollListener();
+  const handleLoadCharacters = useCallback(async (initial = false) => {
+    if (!initial && preloading) return;
+    if (!initial) setPreloading(true);
+    await loadCharacters(page, setCharacters, setPage, setLoading, setError, setPreloading);
   }, [page, preloading]);
+
+  useEffect(() => {
+    handleLoadCharacters(true);
+    const removeScrollListener = infiniteScroll(handleLoadCharacters, 300);
+    return () => removeScrollListener();
+  }, [handleLoadCharacters]);
 
   const headers = ["Nome", "Altura", "N° de espaçonaves", "Filmes"];
 
