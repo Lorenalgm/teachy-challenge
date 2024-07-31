@@ -20,7 +20,7 @@ Este projeto é uma aplicação web que exibe informações sobre personagens do
 O projeto está no ar utilizando a Vercel. Acesse a demonstração em:
 https://teachy-challenge.vercel.app/
 
-<video src="https://i.imgur.com/crXrswF.mp4" width="420" height="340" controls></video>
+<img src="https://i.imgur.com/n4nN1Pd.gif" width="550" height="300" />
 
 ## Como Rodar o Projeto Localmente
 
